@@ -184,11 +184,11 @@ optional_policy(`
 ')
 
 optional_policy(`
-	rsync_exec(mysqld_t)
+	udev_read_db(mysqld_t)
 ')
 
 optional_policy(`
-	udev_read_db(mysqld_t)
+	rsync_exec(mysqld_t)
 ')
 
 #######################################
