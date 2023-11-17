@@ -76,6 +76,10 @@ allow mysqld_t self:unix_stream_socket create_stream_socket_perms;
 allow mysqld_t self:tcp_socket create_stream_socket_perms;
 allow mysqld_t self:udp_socket create_socket_perms;
 
+allow mysqld_t proc_net_t:file { read getattr open };
+allow mysqld_t sysctl_net_t:dir search;
+allow mysqld_t sysctl_net_t:file { read getattr open };
+
 manage_dirs_pattern(mysqld_t, mysqld_db_t, mysqld_db_t)
 manage_files_pattern(mysqld_t, mysqld_db_t, mysqld_db_t)
 manage_sock_files_pattern(mysqld_t, mysqld_db_t, mysqld_db_t)
