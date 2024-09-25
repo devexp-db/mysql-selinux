@@ -110,10 +110,6 @@ manage_files_pattern(mysqld_t, mysqld_var_run_t, mysqld_var_run_t)
 manage_sock_files_pattern(mysqld_t, mysqld_var_run_t, mysqld_var_run_t)
 files_pid_filetrans(mysqld_t, mysqld_var_run_t, { dir file sock_file })
 
-usermanage_read_crack_db(mysqld_t)
-
-userdom_dontaudit_use_unpriv_user_fds(mysqld_t)
-
 kernel_read_network_state(mysqld_t)
 kernel_read_system_state(mysqld_t)
 kernel_read_kernel_sysctls(mysqld_t)
@@ -154,13 +150,6 @@ files_search_var_lib(mysqld_t)
 files_search_pids(mysqld_t)
 files_getattr_all_sockets(mysqld_t)
 
-auth_use_pam(mysqld_t)
-
-logging_send_syslog_msg(mysqld_t)
-
-sysnet_read_config(mysqld_t)
-sysnet_domtrans_ifconfig(mysqld_t)
-
 ifdef(`distro_redhat',`
 	filetrans_pattern(mysqld_t, mysqld_db_t, mysqld_var_run_t, sock_file)
 ')
@@ -175,6 +164,10 @@ tunable_policy(`mysql_connect_http',`
 ')
 
 optional_policy(`
+	auth_use_pam(mysqld_t)
+')
+
+optional_policy(`
 	daemontools_service_domain(mysqld_t, mysqld_exec_t)
 ')
 
@@ -183,11 +176,19 @@ optional_policy(`
 ')
 
 optional_policy(`
-    openshift_search_lib(mysqld_t)
+	logging_send_syslog_msg(mysqld_t)
 ')
 
 optional_policy(`
-    rhcs_manage_cluster_pid_files(mysqld_t)
+	openshift_search_lib(mysqld_t)
+')
+
+optional_policy(`
+	rhcs_manage_cluster_pid_files(mysqld_t)
+')
+
+optional_policy(`
+	rsync_exec(mysqld_t)
 ')
 
 optional_policy(`
@@ -195,11 +196,20 @@ optional_policy(`
 ')
 
 optional_policy(`
+	sysnet_read_config(mysqld_t)
+	sysnet_domtrans_ifconfig(mysqld_t)
+')
+
+optional_policy(`
 	udev_read_db(mysqld_t)
 ')
 
 optional_policy(`
-	rsync_exec(mysqld_t)
+	userdom_dontaudit_use_unpriv_user_fds(mysqld_t)
+')
+
+optional_policy(`
+	usermanage_read_crack_db(mysqld_t)
 ')
 
 #######################################
