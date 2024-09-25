@@ -179,6 +179,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	hostname_exec(mysqld_t)
+')
+
+optional_policy(`
     openshift_search_lib(mysqld_t)
 ')
 
@@ -258,7 +262,6 @@ mysql_write_log(mysqld_safe_t)
 
 optional_policy(`
 	hostname_exec(mysqld_safe_t)
-	hostname_exec(mysqld_t)
 ')
 
 ########################################
