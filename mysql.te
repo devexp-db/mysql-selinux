@@ -76,13 +76,6 @@ allow mysqld_t self:unix_stream_socket create_stream_socket_perms;
 allow mysqld_t self:tcp_socket create_stream_socket_perms;
 allow mysqld_t self:udp_socket create_socket_perms;
 
-kernel_read_network_state(mysqld_t)
-kernel_read_net_sysctls(mysqld_t)
-
-# Allow mysqld_t to read to memory.pressure in cgroup
-fs_read_cgroup_files(mysqld_t)
-fs_write_cgroup_files(mysqld_t)
-
 manage_dirs_pattern(mysqld_t, mysqld_db_t, mysqld_db_t)
 manage_files_pattern(mysqld_t, mysqld_db_t, mysqld_db_t)
 manage_sock_files_pattern(mysqld_t, mysqld_db_t, mysqld_db_t)
@@ -110,9 +103,12 @@ manage_files_pattern(mysqld_t, mysqld_var_run_t, mysqld_var_run_t)
 manage_sock_files_pattern(mysqld_t, mysqld_var_run_t, mysqld_var_run_t)
 files_pid_filetrans(mysqld_t, mysqld_var_run_t, { dir file sock_file })
 
+kernel_read_kernel_sysctls(mysqld_t)
+kernel_read_net_sysctls(mysqld_t)
 kernel_read_network_state(mysqld_t)
 kernel_read_system_state(mysqld_t)
-kernel_read_kernel_sysctls(mysqld_t)
+
+can_exec(mysqld_t, mysqld_exec_t)
 
 corecmd_exec_bin(mysqld_t)
 corecmd_exec_shell(mysqld_t)
@@ -132,23 +128,24 @@ corenet_tcp_connect_tram_port(mysqld_t)
 corenet_sendrecv_mysqld_client_packets(mysqld_t)
 corenet_sendrecv_mysqld_server_packets(mysqld_t)
 
-can_exec(mysqld_t, mysqld_exec_t)
-
 dev_read_sysfs(mysqld_t)
 dev_read_urand(mysqld_t)
 
-fs_getattr_all_fs(mysqld_t)
-fs_search_auto_mountpoints(mysqld_t)
-fs_rw_hugetlbfs_files(mysqld_t)
-
-domain_use_interactive_fds(mysqld_t)
 domain_read_all_domains_state(mysqld_t)
+domain_use_interactive_fds(mysqld_t)
 
+fs_getattr_all_fs(mysqld_t)
+fs_rw_hugetlbfs_files(mysqld_t)
+fs_search_auto_mountpoints(mysqld_t)
+# Allow mysqld_t to read and write to memory.pressure file in cgroup
+fs_read_cgroup_files(mysqld_t)
+fs_write_cgroup_files(mysqld_t)
+
+files_getattr_all_sockets(mysqld_t)
 files_getattr_var_lib_dirs(mysqld_t)
 files_read_etc_runtime_files(mysqld_t)
-files_search_var_lib(mysqld_t)
 files_search_pids(mysqld_t)
-files_getattr_all_sockets(mysqld_t)
+files_search_var_lib(mysqld_t)
 
 ifdef(`distro_redhat',`
 	filetrans_pattern(mysqld_t, mysqld_db_t, mysqld_var_run_t, sock_file)
