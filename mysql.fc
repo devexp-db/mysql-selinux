@@ -48,7 +48,14 @@ HOME_DIR/\.my\.cnf -- gen_context(system_u:object_r:mysqld_home_t, s0)
 /usr/bin/mariadbd-safe-helper    --      gen_context(system_u:object_r:mysqld_exec_t,s0)
 /usr/bin/mariadb-upgrade	--	gen_context(system_u:object_r:mysqld_exec_t,s0)
 
-/usr/bin/mariadbd	--	gen_context(system_u:object_r:mysqld_exec_t,s0)
+# for mariadb upstream which has mariadbd inside of /usr/sbin as a file
+/usr/sbin/mariadbd	--	gen_context(system_u:object_r:mysqld_exec_t,s0)
+# for the fedora >= 42 downstream which has mariadbd inside /usr/bin as a
+# symlink to /usr/libexec/mariadbd
+/usr/bin/mariadbd	-l	gen_context(system_u:object_r:mysqld_exec_t,s0)
+# for the fedora <= 41 and rhel downstream, which has mariadbd /usr/sbin as a
+# symlink to /usr/libexec/mariadbd
+/usr/sbin/mariadbd	-l	gen_context(system_u:object_r:mysqld_exec_t,s0)
 
 /usr/libexec/mariadbd	--	gen_context(system_u:object_r:mysqld_exec_t,s0)
 
