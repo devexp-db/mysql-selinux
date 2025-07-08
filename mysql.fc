@@ -28,8 +28,16 @@ HOME_DIR/\.my\.cnf -- gen_context(system_u:object_r:mysqld_home_t, s0)
 /usr/libexec/mysqld	--	gen_context(system_u:object_r:mysqld_exec_t,s0)
 /usr/libexec/mysqld_safe-scl-helper --  gen_context(system_u:object_r:mysqld_safe_exec_t,s0)
 
-
+# for the oracle upstream rpms which have mysqld inside of /usr/bin as a file
+# and not as a symlink
 /usr/bin/mysqld(-max|-debug)?	--	gen_context(system_u:object_r:mysqld_exec_t,s0)
+# for the mariadb upstream and fedora >= 41/rhel downstream mariadb and mysql
+# which have mysqld in /usr/sbin as a symlink to /usr/sbin/mariadbd 
+# and /usr/libexec/mysqld respectively
+/usr/sbin/mysqld		-l	gen_context(system_u:object_r:mysqld_exec_t,s0)
+# for the fedora >= 42 downstream which has mysqld inside /usr/bin as a symlink
+# to /usr/libexec/mysqld
+/usr/bin/mysqld		-l	gen_context(system_u:object_r:mysqld_exec_t,s0)
 /usr/bin/mysqlmanager	--	gen_context(system_u:object_r:mysqlmanagerd_exec_t,s0)
 /usr/bin/ndbd		--	gen_context(system_u:object_r:mysqld_exec_t,s0)
 
