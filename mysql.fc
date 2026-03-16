@@ -57,6 +57,10 @@ HOME_DIR/\.my\.cnf -- gen_context(system_u:object_r:mysqld_home_t, s0)
 /var/log/mysql(/.*)?	gen_context(system_u:object_r:mysqld_log_t,s0)
 /var/log/mysql.*	--	gen_context(system_u:object_r:mysqld_log_t,s0)
 
+/var/lib/mysql/\.k5identity		gen_context(system_u:object_r:krb5_home_t,s0)
+/var/lib/mysql/\.k5login		gen_context(system_u:object_r:krb5_home_t,s0)
+/var/lib/mysql/\.k5users		gen_context(system_u:object_r:krb5_home_t,s0)
+
 /run/mariadb(/.*)?      gen_context(system_u:object_r:mysqld_var_run_t,s0)
 /run/mysql(/.*)?		gen_context(system_u:object_r:mysqld_var_run_t,s0)
 /run/mysqld(/.*)?		gen_context(system_u:object_r:mysqld_var_run_t,s0)
