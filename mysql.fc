@@ -47,6 +47,9 @@ HOME_DIR/\.my\.cnf -- gen_context(system_u:object_r:mysqld_home_t, s0)
 
 /usr/bin/mariadb-backup	--	gen_context(system_u:object_r:mysqld_exec_t,s0)
 
+# wsrep SST shell function library, sourced by wsrep_sst_* scripts
+/usr/share/mariadb/wsrep_sst_common	--	gen_context(system_u:object_r:mysqld_etc_t,s0)
+
 #
 # /var
 #
