@@ -160,8 +160,11 @@ tunable_policy(`mysql_connect_http',`
 	corenet_tcp_connect_http_port(mysqld_t)
 ')
 
+# MariaDB's auth_pam_tool runs as chkpwd_t and calls PAM, which
+# invokes unix_chkpwd (also chkpwd_exec_t) to verify passwords.
 optional_policy(`
 	auth_use_pam(mysqld_t)
+	allow chkpwd_t chkpwd_exec_t:file execute_no_trans;
 ')
 
 optional_policy(`
